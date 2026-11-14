@@ -1,5 +1,5 @@
 script_name("CarTool")
-local script_version = 1.0
+local script_version = 1.01
 
 require "lib.moonloader"
 local ffi = require "ffi"
@@ -95,10 +95,10 @@ local Sys = {
 }
 
 local notifPositions = {
-    u8"Слева снизу",
-    u8"Снизу (по центру)",
-    u8"Справа снизу",
-    u8"Сверху (по центру)"
+    u8"Г‘Г«ГҐГўГ  Г±Г­ГЁГ§Гі",
+    u8"Г‘Г­ГЁГ§Гі (ГЇГ® Г¶ГҐГ­ГІГ°Гі)",
+    u8"Г‘ГЇГ°Г ГўГ  Г±Г­ГЁГ§Гі",
+    u8"Г‘ГўГҐГ°ГµГі (ГЇГ® Г¶ГҐГ­ГІГ°Гі)"
 }
 
 local theme = {
@@ -180,36 +180,36 @@ for id = 400, 611 do
 end
 
 local handlingFields = {
-    { key = "suspForce",      label = "Suspension Force Level (Жёсткость подвески)",      cat = 1, safe = true,  offset = 0xAC, type = "float", tokenIdx = 22 },
-    { key = "suspDamping",    label = "Suspension Damping (Затухание амортизаторов)",     cat = 1, safe = true,  offset = 0xB0, type = "float", tokenIdx = 23 },
-    { key = "suspHighSpd",    label = "High Speed Damping (Скоростное демпфирование)",    cat = 1, safe = true,  offset = 0xB4, type = "float", tokenIdx = 24 },
-    { key = "suspUpper",      label = "Suspension Upper Limit (Верхний предел хода)",     cat = 1, safe = true,  offset = 0xB8, type = "float", tokenIdx = 25 },
-    { key = "suspLower",      label = "Suspension Lower Limit (Высота посадки / Клиренс)",cat = 1, safe = true,  offset = 0xBC, type = "float", tokenIdx = 26 },
-    { key = "suspBias",       label = "Suspension Bias (Баланс подвески перед/зад)",      cat = 1, safe = true,  offset = 0xC0, type = "float", tokenIdx = 27 },
-    { key = "suspAntiDive",   label = "Suspension Anti-Dive (Анти-клевок кузова)",        cat = 1, safe = true,  offset = 0xC4, type = "float", tokenIdx = 28 },
+    { key = "suspForce",      label = "Suspension Force Level (Г†ВёГ±ГІГЄГ®Г±ГІГј ГЇГ®Г¤ГўГҐГ±ГЄГЁ)",      cat = 1, safe = true,  offset = 0xAC, type = "float", tokenIdx = 22 },
+    { key = "suspDamping",    label = "Suspension Damping (Г‡Г ГІГіГµГ Г­ГЁГҐ Г Г¬Г®Г°ГІГЁГ§Г ГІГ®Г°Г®Гў)",     cat = 1, safe = true,  offset = 0xB0, type = "float", tokenIdx = 23 },
+    { key = "suspHighSpd",    label = "High Speed Damping (Г‘ГЄГ®Г°Г®Г±ГІГ­Г®ГҐ Г¤ГҐГ¬ГЇГґГЁГ°Г®ГўГ Г­ГЁГҐ)",    cat = 1, safe = true,  offset = 0xB4, type = "float", tokenIdx = 24 },
+    { key = "suspUpper",      label = "Suspension Upper Limit (Г‚ГҐГ°ГµГ­ГЁГ© ГЇГ°ГҐГ¤ГҐГ« ГµГ®Г¤Г )",     cat = 1, safe = true,  offset = 0xB8, type = "float", tokenIdx = 25 },
+    { key = "suspLower",      label = "Suspension Lower Limit (Г‚Г»Г±Г®ГІГ  ГЇГ®Г±Г Г¤ГЄГЁ / ГЉГ«ГЁГ°ГҐГ­Г±)",cat = 1, safe = true,  offset = 0xBC, type = "float", tokenIdx = 26 },
+    { key = "suspBias",       label = "Suspension Bias (ГЃГ Г«Г Г­Г± ГЇГ®Г¤ГўГҐГ±ГЄГЁ ГЇГҐГ°ГҐГ¤/Г§Г Г¤)",      cat = 1, safe = true,  offset = 0xC0, type = "float", tokenIdx = 27 },
+    { key = "suspAntiDive",   label = "Suspension Anti-Dive (ГЂГ­ГІГЁ-ГЄГ«ГҐГўГ®ГЄ ГЄГіГ§Г®ГўГ )",        cat = 1, safe = true,  offset = 0xC4, type = "float", tokenIdx = 28 },
 
-    { key = "tractionMult",   label = "Traction Multiplier (Сцепление колёс)",            cat = 2, safe = true,  offset = 0x28, type = "float", tokenIdx = 9  },
-    { key = "tractionLoss",   label = "Traction Loss (Потеря сцепления)",                 cat = 2, safe = true,  offset = 0xA4, type = "float", tokenIdx = 10 },
-    { key = "tractionBias",   label = "Traction Bias (Баланс сцепления осей)",            cat = 2, safe = true,  offset = 0xA8, type = "float", tokenIdx = 11 },
-    { key = "steeringLock",   label = "Steering Lock (Угол выворота колёс)",              cat = 2, safe = true,  offset = 0xA0, type = "float", tokenIdx = 21 },
-    { key = "comX",           label = "Centre Of Mass X (Центр масс X)",                  cat = 2, safe = true,  offset = 0x14, type = "float", tokenIdx = 5  },
-    { key = "comY",           label = "Centre Of Mass Y (Центр масс Y)",                  cat = 2, safe = true,  offset = 0x18, type = "float", tokenIdx = 6  },
-    { key = "comZ",           label = "Centre Of Mass Z (Центр масс Z / Высота)",         cat = 2, safe = true,  offset = 0x1C, type = "float", tokenIdx = 7  },
+    { key = "tractionMult",   label = "Traction Multiplier (Г‘Г¶ГҐГЇГ«ГҐГ­ГЁГҐ ГЄГ®Г«ВёГ±)",            cat = 2, safe = true,  offset = 0x28, type = "float", tokenIdx = 9  },
+    { key = "tractionLoss",   label = "Traction Loss (ГЏГ®ГІГҐГ°Гї Г±Г¶ГҐГЇГ«ГҐГ­ГЁГї)",                 cat = 2, safe = true,  offset = 0xA4, type = "float", tokenIdx = 10 },
+    { key = "tractionBias",   label = "Traction Bias (ГЃГ Г«Г Г­Г± Г±Г¶ГҐГЇГ«ГҐГ­ГЁГї Г®Г±ГҐГ©)",            cat = 2, safe = true,  offset = 0xA8, type = "float", tokenIdx = 11 },
+    { key = "steeringLock",   label = "Steering Lock (Г“ГЈГ®Г« ГўГ»ГўГ®Г°Г®ГІГ  ГЄГ®Г«ВёГ±)",              cat = 2, safe = true,  offset = 0xA0, type = "float", tokenIdx = 21 },
+    { key = "comX",           label = "Centre Of Mass X (Г–ГҐГ­ГІГ° Г¬Г Г±Г± X)",                  cat = 2, safe = true,  offset = 0x14, type = "float", tokenIdx = 5  },
+    { key = "comY",           label = "Centre Of Mass Y (Г–ГҐГ­ГІГ° Г¬Г Г±Г± Y)",                  cat = 2, safe = true,  offset = 0x18, type = "float", tokenIdx = 6  },
+    { key = "comZ",           label = "Centre Of Mass Z (Г–ГҐГ­ГІГ° Г¬Г Г±Г± Z / Г‚Г»Г±Г®ГІГ )",         cat = 2, safe = true,  offset = 0x1C, type = "float", tokenIdx = 7  },
 
-    { key = "mass",           label = "Mass (Масса автомобиля)",                          cat = 3, safe = false, offset = 0x04, type = "mass",  tokenIdx = 2  },
-    { key = "turnMass",       label = "Turn Mass (Поворотная масса)",                     cat = 3, safe = false, offset = 0x0C, type = "float", tokenIdx = 3  },
-    { key = "dragMult",       label = "Drag Multiplier (Сопротивление ветра)",            cat = 3, safe = false, offset = 0x10, type = "float", tokenIdx = 4  },
-    { key = "submerged",      label = "Percent Submerged (Погружение в воду %)",          cat = 3, safe = false, offset = 0x20, type = "int8",  tokenIdx = 8  },
-    { key = "gears",          label = "Number of Gears (Количество передач)",             cat = 3, safe = false, offset = 0x76, type = "int8",  tokenIdx = 12 },
-    { key = "engineAccel",    label = "Engine Acceleration (Ускорение / Разгон)",         cat = 3, safe = false, offset = 0x7C, type = "accel", tokenIdx = 14 },
-    { key = "engineInertia",  label = "Engine Inertia (Инерция двигателя)",               cat = 3, safe = false, offset = 0x80, type = "float", tokenIdx = 15 },
-    { key = "driveType",      label = "Drive Type (Тип привода: RWD / FWD / AWD)",        cat = 3, safe = false, offset = 0x74, type = "drive", tokenIdx = 16 },
-    { key = "engineType",     label = "Engine Type (Тип двигателя: P / D / E)",           cat = 3, safe = false, offset = 0x75, type = "eng",   tokenIdx = 17 },
-    { key = "brakeDecel",     label = "Brake Deceleration (Сила торможения)",             cat = 3, safe = false, offset = 0x94, type = "brake", tokenIdx = 18 },
-    { key = "brakeBias",      label = "Brake Bias (Баланс тормозов)",                     cat = 3, safe = false, offset = 0x98, type = "float", tokenIdx = 19 },
-    { key = "abs",            label = "ABS (Антиблокировочная система)",                  cat = 3, safe = false, offset = 0x9C, type = "abs",   tokenIdx = 20 },
-    { key = "seatOffset",     label = "Seat Offset Distance (Посадка педа)",              cat = 3, safe = false, offset = 0xD4, type = "float", tokenIdx = 29 },
-    { key = "colDamage",      label = "Collision Damage Mult (Множитель урона)",          cat = 3, safe = false, offset = 0xC8, type = "float", tokenIdx = 30 }
+    { key = "mass",           label = "Mass (ГЊГ Г±Г±Г  Г ГўГІГ®Г¬Г®ГЎГЁГ«Гї)",                          cat = 3, safe = false, offset = 0x04, type = "mass",  tokenIdx = 2  },
+    { key = "turnMass",       label = "Turn Mass (ГЏГ®ГўГ®Г°Г®ГІГ­Г Гї Г¬Г Г±Г±Г )",                     cat = 3, safe = false, offset = 0x0C, type = "float", tokenIdx = 3  },
+    { key = "dragMult",       label = "Drag Multiplier (Г‘Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГўГҐГІГ°Г )",            cat = 3, safe = false, offset = 0x10, type = "float", tokenIdx = 4  },
+    { key = "submerged",      label = "Percent Submerged (ГЏГ®ГЈГ°ГіГ¦ГҐГ­ГЁГҐ Гў ГўГ®Г¤Гі %)",          cat = 3, safe = false, offset = 0x20, type = "int8",  tokenIdx = 8  },
+    { key = "gears",          label = "Number of Gears (ГЉГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГҐГ°ГҐГ¤Г Г·)",             cat = 3, safe = false, offset = 0x76, type = "int8",  tokenIdx = 12 },
+    { key = "engineAccel",    label = "Engine Acceleration (Г“Г±ГЄГ®Г°ГҐГ­ГЁГҐ / ГђГ Г§ГЈГ®Г­)",         cat = 3, safe = false, offset = 0x7C, type = "accel", tokenIdx = 14 },
+    { key = "engineInertia",  label = "Engine Inertia (Г€Г­ГҐГ°Г¶ГЁГї Г¤ГўГЁГЈГ ГІГҐГ«Гї)",               cat = 3, safe = false, offset = 0x80, type = "float", tokenIdx = 15 },
+    { key = "driveType",      label = "Drive Type (Г’ГЁГЇ ГЇГ°ГЁГўГ®Г¤Г : RWD / FWD / AWD)",        cat = 3, safe = false, offset = 0x74, type = "drive", tokenIdx = 16 },
+    { key = "engineType",     label = "Engine Type (Г’ГЁГЇ Г¤ГўГЁГЈГ ГІГҐГ«Гї: P / D / E)",           cat = 3, safe = false, offset = 0x75, type = "eng",   tokenIdx = 17 },
+    { key = "brakeDecel",     label = "Brake Deceleration (Г‘ГЁГ«Г  ГІГ®Г°Г¬Г®Г¦ГҐГ­ГЁГї)",             cat = 3, safe = false, offset = 0x94, type = "brake", tokenIdx = 18 },
+    { key = "brakeBias",      label = "Brake Bias (ГЃГ Г«Г Г­Г± ГІГ®Г°Г¬Г®Г§Г®Гў)",                     cat = 3, safe = false, offset = 0x98, type = "float", tokenIdx = 19 },
+    { key = "abs",            label = "ABS (ГЂГ­ГІГЁГЎГ«Г®ГЄГЁГ°Г®ГўГ®Г·Г­Г Гї Г±ГЁГ±ГІГҐГ¬Г )",                  cat = 3, safe = false, offset = 0x9C, type = "abs",   tokenIdx = 20 },
+    { key = "seatOffset",     label = "Seat Offset Distance (ГЏГ®Г±Г Г¤ГЄГ  ГЇГҐГ¤Г )",              cat = 3, safe = false, offset = 0xD4, type = "float", tokenIdx = 29 },
+    { key = "colDamage",      label = "Collision Damage Mult (ГЊГ­Г®Г¦ГЁГІГҐГ«Гј ГіГ°Г®Г­Г )",          cat = 3, safe = false, offset = 0xC8, type = "float", tokenIdx = 30 }
 }
 
 local importFieldChecks = {}
@@ -228,7 +228,7 @@ local defaultHandlingBackup = {}
 local savedHandlings = {}
 local parsedImportState = {
     valid = false,
-    message = "Вставьте строку из файла handling.cfg",
+    message = "Г‚Г±ГІГ ГўГјГІГҐ Г±ГІГ°Г®ГЄГі ГЁГ§ ГґГ Г©Г«Г  handling.cfg",
     detectedModel = nil,
     values = {},
     count = 0
@@ -507,7 +507,7 @@ local function formatHandlingValue(field, val)
         elseif val == 69 then return "Electric (E)" end
         return tostring(val)
     elseif field.type == "abs" then
-        return (val >= 1) and "ВКЛ (1)" or "ВЫКЛ (0)"
+        return (val >= 1) and "Г‚ГЉГ‹ (1)" or "Г‚Г›ГЉГ‹ (0)"
     elseif field.type == "int8" then
         return string.format("%d", math.floor(val))
     else
@@ -519,7 +519,7 @@ local function parseHandlingString(rawLine)
     local clean = trim(rawLine or "")
     if clean == "" then
         parsedImportState.valid = false
-        parsedImportState.message = "Вставьте строку из файла handling.cfg"
+        parsedImportState.message = "Г‚Г±ГІГ ГўГјГІГҐ Г±ГІГ°Г®ГЄГі ГЁГ§ ГґГ Г©Г«Г  handling.cfg"
         parsedImportState.values = {}
         parsedImportState.detectedModel = nil
         parsedImportState.count = 0
@@ -534,7 +534,7 @@ local function parseHandlingString(rawLine)
 
     if #rawTokens < 18 then
         parsedImportState.valid = false
-        parsedImportState.message = string.format("Недостаточно значений в строке (найдено %d, нужно минимум 25)", #rawTokens)
+        parsedImportState.message = string.format("ГЌГҐГ¤Г®Г±ГІГ ГІГ®Г·Г­Г® Г§Г­Г Г·ГҐГ­ГЁГ© Гў Г±ГІГ°Г®ГЄГҐ (Г­Г Г©Г¤ГҐГ­Г® %d, Г­ГіГ¦Г­Г® Г¬ГЁГ­ГЁГ¬ГіГ¬ 25)", #rawTokens)
         parsedImportState.values = {}
         parsedImportState.detectedModel = nil
         parsedImportState.count = 0
@@ -625,10 +625,10 @@ local function parseHandlingString(rawLine)
     parsedImportState.detectedModel = detectedModel
     if count >= 10 then
         parsedImportState.valid = true
-        parsedImportState.message = string.format("Строка распознана (параметров: %d | Макс. скорость и флаги пропущены)", count)
+        parsedImportState.message = string.format("Г‘ГІГ°Г®ГЄГ  Г°Г Г±ГЇГ®Г§Г­Г Г­Г  (ГЇГ Г°Г Г¬ГҐГІГ°Г®Гў: %d | ГЊГ ГЄГ±. Г±ГЄГ®Г°Г®Г±ГІГј ГЁ ГґГ«Г ГЈГЁ ГЇГ°Г®ГЇГіГ№ГҐГ­Г»)", count)
     else
         parsedImportState.valid = false
-        parsedImportState.message = "Не удалось распознать числовые параметры строки handling.cfg"
+        parsedImportState.message = "ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г°Г Г±ГЇГ®Г§Г­Г ГІГј Г·ГЁГ±Г«Г®ГўГ»ГҐ ГЇГ Г°Г Г¬ГҐГІГ°Г» Г±ГІГ°Г®ГЄГЁ handling.cfg"
     end
 end
 
@@ -784,7 +784,7 @@ local function checkUpdates(is_manual)
     activeTempFiles[updateFile_tmp] = true
 
     if is_manual then
-        showSystemNotification(u8"Проверка обновлений...", 3)
+        showSystemNotification(u8"ГЏГ°Г®ГўГҐГ°ГЄГ  Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГ©...", 3)
     end
 
     local url_no_cache = updateUrl .. "?t=" .. tostring(os.time())
@@ -816,7 +816,7 @@ local function checkUpdates(is_manual)
                         local is_silent = (data.silent == true) and not is_manual
 
                         if not is_silent then
-                            showSystemNotification(u8"Найдено обновление! Загрузка...", 3)
+                            showSystemNotification(u8"ГЌГ Г©Г¤ГҐГ­Г® Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ! Г‡Г ГЈГ°ГіГ§ГЄГ ...", 3)
                         end
 
                         lua_thread.create(function()
@@ -842,45 +842,45 @@ local function checkUpdates(is_manual)
                                             fOut:write(newCode)
                                             fOut:close()
                                             if not is_silent then
-                                                showSystemNotification(u8"Успешно обновлено! Перезапуск...", 1)
+                                                showSystemNotification(u8"Г“Г±ГЇГҐГёГ­Г® Г®ГЎГ­Г®ГўГ«ГҐГ­Г®! ГЏГҐГ°ГҐГ§Г ГЇГіГ±ГЄ...", 1)
                                             end
                                             lua_thread.create(function()
                                                 wait(1500)
                                                 thisScript():reload()
                                             end)
                                         elseif not is_silent then
-                                            showSystemNotification(u8"Ошибка: Файл скрипта занят!", 2)
+                                            showSystemNotification(u8"ГЋГёГЁГЎГЄГ : Г”Г Г©Г« Г±ГЄГ°ГЁГЇГІГ  Г§Г Г­ГїГІ!", 2)
                                         end
                                     end
                                 elseif status2 == dlstatus.STATUS_EX_ERROR then
                                     pcall(os.remove, tempPath)
                                     activeTempFiles[tempPath] = nil
                                     if not is_silent then
-                                        showSystemNotification(u8"Ошибка при скачивании обновления!", 2)
+                                        showSystemNotification(u8"ГЋГёГЁГЎГЄГ  ГЇГ°ГЁ Г±ГЄГ Г·ГЁГўГ Г­ГЁГЁ Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГї!", 2)
                                     end
                                 end
                             end)
                         end)
                     else
                         if is_manual then
-                            showSystemNotification(u8"У вас установлена последняя версия!", 1)
+                            showSystemNotification(u8"Г“ ГўГ Г± ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­Г  ГЇГ®Г±Г«ГҐГ¤Г­ГїГї ГўГҐГ°Г±ГЁГї!", 1)
                         end
                     end
                 else
                     if is_manual then
-                        showSystemNotification(u8"Ошибка: Неверный формат ответа от сервера!", 2)
+                        showSystemNotification(u8"ГЋГёГЁГЎГЄГ : ГЌГҐГўГҐГ°Г­Г»Г© ГґГ®Г°Г¬Г ГІ Г®ГІГўГҐГІГ  Г®ГІ Г±ГҐГ°ГўГҐГ°Г !", 2)
                     end
                 end
             else
                 if is_manual then
-                    showSystemNotification(u8"Ошибка: Пустой ответ от сервера GitHub!", 2)
+                    showSystemNotification(u8"ГЋГёГЁГЎГЄГ : ГЏГіГ±ГІГ®Г© Г®ГІГўГҐГІ Г®ГІ Г±ГҐГ°ГўГҐГ°Г  GitHub!", 2)
                 end
             end
         elseif status == dlstatus.STATUS_EX_ERROR then
             pcall(os.remove, updateFile_tmp)
             activeTempFiles[updateFile_tmp] = nil
             if is_manual then
-                showSystemNotification(u8"Ошибка соединения с GitHub!", 2)
+                showSystemNotification(u8"ГЋГёГЁГЎГЄГ  Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї Г± GitHub!", 2)
             end
         end
     end)
@@ -1363,7 +1363,7 @@ imgui.OnFrame(
         imgui.SetNextWindowPos(imgui.ImVec2(resX * 0.5, resY * 0.5), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
         imgui.SetNextWindowSize(imgui.ImVec2(820 * scale, 510 * scale), imgui.Cond.FirstUseEver)
 
-        if imgui.Begin(u8"Внесение изменений в Хендлинг | CarTool", UI.importModal, imgui.WindowFlags.NoCollapse) then
+        if imgui.Begin(u8"Г‚Г­ГҐГ±ГҐГ­ГЁГҐ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГ© Гў Г•ГҐГ­Г¤Г«ГЁГ­ГЈ | CarTool", UI.importModal, imgui.WindowFlags.NoCollapse) then
             local spaceX = imgui.GetStyle().ItemSpacing.x
             local framePadX = imgui.GetStyle().FramePadding.x
 
@@ -1372,14 +1372,14 @@ imgui.OnFrame(
             local curCarModel = (curCar and doesVehicleExist(curCar)) and getCarModel(curCar) or nil
 
             imgui.AlignTextToFramePadding()
-            imgui.TextColored(theme.muted, u8"Автомобиль:")
+            imgui.TextColored(theme.muted, u8"ГЂГўГІГ®Г¬Г®ГЎГЁГ«Гј:")
             imgui.SameLine(0, 8 * scale)
 
             local selName = string.format("%s [ID: %d]", vehicleNames[UI.importModelId] or "Unknown", UI.importModelId)
             imgui.PushItemWidth(260 * scale)
             if imgui.BeginCombo("##importCarCombo", u8(selName)) then
                 imgui.PushItemWidth(-1)
-                imgui.InputTextWithHint("##impCarSearch", u8"Поиск по названию или ID...", UI.importCarSearch, ffi.sizeof(UI.importCarSearch))
+                imgui.InputTextWithHint("##impCarSearch", u8"ГЏГ®ГЁГ±ГЄ ГЇГ® Г­Г Г§ГўГ Г­ГЁГѕ ГЁГ«ГЁ ID...", UI.importCarSearch, ffi.sizeof(UI.importCarSearch))
                 imgui.PopItemWidth()
                 imgui.Separator()
                 local flt = cp1251_lower(trim(u8:decode(ffi.string(UI.importCarSearch))))
@@ -1400,7 +1400,7 @@ imgui.OnFrame(
 
             if curCarModel then
                 imgui.SameLine(0, spaceX)
-                if styleButton(u8(string.format("Текущее авто (%s)", vehicleNames[curCarModel] or curCarModel)), theme.them) then
+                if styleButton(u8(string.format("Г’ГҐГЄГіГ№ГҐГҐ Г ГўГІГ® (%s)", vehicleNames[curCarModel] or curCarModel)), theme.them) then
                     UI.importModelId = curCarModel
                     backupDefaultHandling(curCarModel)
                 end
@@ -1409,7 +1409,7 @@ imgui.OnFrame(
             if parsedImportState.detectedModel and parsedImportState.detectedModel ~= UI.importModelId then
                 imgui.SameLine(0, spaceX)
                 local detId = parsedImportState.detectedModel
-                if styleButton(u8(string.format("Из строки: %s (%d)", vehicleNames[detId] or detId, detId)), theme.warn) then
+                if styleButton(u8(string.format("Г€Г§ Г±ГІГ°Г®ГЄГЁ: %s (%d)", vehicleNames[detId] or detId, detId)), theme.warn) then
                     UI.importModelId = detId
                     backupDefaultHandling(detId)
                 end
@@ -1417,14 +1417,14 @@ imgui.OnFrame(
 
             imgui.Spacing()
 
-            local pasteBtnText = u8"Вставить из буфера"
-            local clrBtnText = u8"Очистить"
+            local pasteBtnText = u8"Г‚Г±ГІГ ГўГЁГІГј ГЁГ§ ГЎГіГґГҐГ°Г "
+            local clrBtnText = u8"ГЋГ·ГЁГ±ГІГЁГІГј"
             local pasteW = imgui.CalcTextSize(pasteBtnText).x + framePadX * 2 + 10 * scale
             local clrW = imgui.CalcTextSize(clrBtnText).x + framePadX * 2 + 10 * scale
             local lineInputW = imgui.GetContentRegionAvail().x - pasteW - clrW - spaceX * 2
 
             imgui.PushItemWidth(lineInputW)
-            if imgui.InputTextWithHint("##handlingRawLine", u8"Вставьте сюда строку из handling.cfg (пробелы и табуляции парсятся автоматически)...", UI.importLineBuf, ffi.sizeof(UI.importLineBuf)) then
+            if imgui.InputTextWithHint("##handlingRawLine", u8"Г‚Г±ГІГ ГўГјГІГҐ Г±ГѕГ¤Г  Г±ГІГ°Г®ГЄГі ГЁГ§ handling.cfg (ГЇГ°Г®ГЎГҐГ«Г» ГЁ ГІГ ГЎГіГ«ГїГ¶ГЁГЁ ГЇГ Г°Г±ГїГІГ±Гї Г ГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГЁ)...", UI.importLineBuf, ffi.sizeof(UI.importLineBuf)) then
                 parseHandlingString(u8:decode(ffi.string(UI.importLineBuf)))
             end
             imgui.PopItemWidth()
@@ -1463,12 +1463,12 @@ imgui.OnFrame(
             imgui.AlignTextToFramePadding()
             imgui.TextColored(UI.importSafeMode[0] and theme.online or theme.warn,
                 UI.importSafeMode[0]
-                    and u8"Безопасный режим: ВКЛ (меняются только подвеска, колёса и посадка без разгона и сопротивления ветра)"
-                    or u8"Безопасный режим: ВЫКЛ (заменяется вся строка кроме максимальной скорости и флагов)"
+                    and u8"ГЃГҐГ§Г®ГЇГ Г±Г­Г»Г© Г°ГҐГ¦ГЁГ¬: Г‚ГЉГ‹ (Г¬ГҐГ­ГїГѕГІГ±Гї ГІГ®Г«ГјГЄГ® ГЇГ®Г¤ГўГҐГ±ГЄГ , ГЄГ®Г«ВёГ±Г  ГЁ ГЇГ®Г±Г Г¤ГЄГ  ГЎГҐГ§ Г°Г Г§ГЈГ®Г­Г  ГЁ Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГї ГўГҐГІГ°Г )"
+                    or u8"ГЃГҐГ§Г®ГЇГ Г±Г­Г»Г© Г°ГҐГ¦ГЁГ¬: Г‚Г›ГЉГ‹ (Г§Г Г¬ГҐГ­ГїГҐГІГ±Гї ГўГ±Гї Г±ГІГ°Г®ГЄГ  ГЄГ°Г®Г¬ГҐ Г¬Г ГЄГ±ГЁГ¬Г Г«ГјГ­Г®Г© Г±ГЄГ®Г°Г®Г±ГІГЁ ГЁ ГґГ«Г ГЈГ®Гў)"
             )
 
-            local btnAllText = u8"Выбрать все"
-            local btnNoneText = u8"Снять все"
+            local btnAllText = u8"Г‚Г»ГЎГ°Г ГІГј ГўГ±ГҐ"
+            local btnNoneText = u8"Г‘Г­ГїГІГј ГўГ±ГҐ"
             local wAll = imgui.CalcTextSize(btnAllText).x + framePadX * 2 + 8 * scale
             local wNone = imgui.CalcTextSize(btnNoneText).x + framePadX * 2 + 8 * scale
             imgui.SameLine()
@@ -1496,9 +1496,9 @@ imgui.OnFrame(
             local baseAddr = getHandlingBaseAddr(UI.importModelId)
 
             local catTitles = {
-                [1] = u8"1. Подвеска и посадка кузова (Безопасный режим)",
-                [2] = u8"2. Колёса, сцепление и центр тяжести (Безопасный режим)",
-                [3] = u8"3. Разгон, сопротивление ветра (Drag), масса и тормоза (Полный режим)"
+                [1] = u8"1. ГЏГ®Г¤ГўГҐГ±ГЄГ  ГЁ ГЇГ®Г±Г Г¤ГЄГ  ГЄГіГ§Г®ГўГ  (ГЃГҐГ§Г®ГЇГ Г±Г­Г»Г© Г°ГҐГ¦ГЁГ¬)",
+                [2] = u8"2. ГЉГ®Г«ВёГ±Г , Г±Г¶ГҐГЇГ«ГҐГ­ГЁГҐ ГЁ Г¶ГҐГ­ГІГ° ГІГїГ¦ГҐГ±ГІГЁ (ГЃГҐГ§Г®ГЇГ Г±Г­Г»Г© Г°ГҐГ¦ГЁГ¬)",
+                [3] = u8"3. ГђГ Г§ГЈГ®Г­, Г±Г®ГЇГ°Г®ГІГЁГўГ«ГҐГ­ГЁГҐ ГўГҐГІГ°Г  (Drag), Г¬Г Г±Г±Г  ГЁ ГІГ®Г°Г¬Г®Г§Г  (ГЏГ®Г«Г­Г»Г© Г°ГҐГ¦ГЁГ¬)"
             }
 
             for catId = 1, 3 do
@@ -1510,7 +1510,7 @@ imgui.OnFrame(
                         local curVal = baseAddr and readHandlingField(baseAddr, f) or nil
                         local newVal = parsedImportState.values[f.key]
                         local curStr = formatHandlingValue(f, curVal)
-                        local newStr = newVal ~= nil and formatHandlingValue(f, newVal) or "нет в строке"
+                        local newStr = newVal ~= nil and formatHandlingValue(f, newVal) or "Г­ГҐГІ Гў Г±ГІГ°Г®ГЄГҐ"
 
                         imgui.Checkbox(u8(f.label) .. "##chk_" .. f.key, importFieldChecks[f.key])
                         imgui.SameLine()
@@ -1518,7 +1518,7 @@ imgui.OnFrame(
                             imgui.TextColored(importFieldChecks[f.key][0] and theme.sys_info or theme.muted,
                                 u8(string.format("[%s -> %s]", curStr, newStr)))
                         else
-                            imgui.TextColored(theme.muted, u8(string.format("[Текущее: %s]", curStr)))
+                            imgui.TextColored(theme.muted, u8(string.format("[Г’ГҐГЄГіГ№ГҐГҐ: %s]", curStr)))
                         end
                         imgui.NextColumn()
                     end
@@ -1534,7 +1534,7 @@ imgui.OnFrame(
             local btnW = (availW - gap * 2) / 3
 
             if parsedImportState.valid then
-                if imgui.Button(u8"Применить выбранные пункты", imgui.ImVec2(btnW, 30 * scale)) then
+                if imgui.Button(u8"ГЏГ°ГЁГ¬ГҐГ­ГЁГІГј ГўГ»ГЎГ°Г Г­Г­Г»ГҐ ГЇГіГ­ГЄГІГ»", imgui.ImVec2(btnW, 30 * scale)) then
                     local chosenValues = {}
                     local appliedCount = 0
                     for _, f in ipairs(handlingFields) do
@@ -1554,28 +1554,28 @@ imgui.OnFrame(
                         applySavedHandlingEntry(UI.importModelId, savedHandlings[UI.importModelId])
                         saveConfig()
                         showSystemNotification(
-                            u8(string.format("Хендлинг применён к %s (%d пунктов)", vehicleNames[UI.importModelId] or UI.importModelId, appliedCount)),
+                            u8(string.format("Г•ГҐГ­Г¤Г«ГЁГ­ГЈ ГЇГ°ГЁГ¬ГҐГ­ВёГ­ ГЄ %s (%d ГЇГіГ­ГЄГІГ®Гў)", vehicleNames[UI.importModelId] or UI.importModelId, appliedCount)),
                             1, 3.5
                         )
                         UI.importModal[0] = false
                     else
-                        showSystemNotification(u8"Не выбрано ни одного пункта для изменения!", 2, 3.0)
+                        showSystemNotification(u8"ГЌГҐ ГўГ»ГЎГ°Г Г­Г® Г­ГЁ Г®Г¤Г­Г®ГЈГ® ГЇГіГ­ГЄГІГ  Г¤Г«Гї ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї!", 2, 3.0)
                     end
                 end
             else
-                disabledButton(u8"Применить выбранные пункты", imgui.ImVec2(btnW, 30 * scale))
+                disabledButton(u8"ГЏГ°ГЁГ¬ГҐГ­ГЁГІГј ГўГ»ГЎГ°Г Г­Г­Г»ГҐ ГЇГіГ­ГЄГІГ»", imgui.ImVec2(btnW, 30 * scale))
             end
 
             imgui.SameLine(0, gap)
-            if styleButton(u8"Сбросить авто к стандарту", theme.danger, imgui.ImVec2(btnW, 30 * scale)) then
+            if styleButton(u8"Г‘ГЎГ°Г®Г±ГЁГІГј Г ГўГІГ® ГЄ Г±ГІГ Г­Г¤Г Г°ГІГі", theme.danger, imgui.ImVec2(btnW, 30 * scale)) then
                 resetModelHandlingToDefault(UI.importModelId)
                 savedHandlings[UI.importModelId] = nil
                 saveConfig()
-                showSystemNotification(u8(string.format("Хендлинг %s сброшен к заводскому", vehicleNames[UI.importModelId] or UI.importModelId)), 3, 3.0)
+                showSystemNotification(u8(string.format("Г•ГҐГ­Г¤Г«ГЁГ­ГЈ %s Г±ГЎГ°Г®ГёГҐГ­ ГЄ Г§Г ГўГ®Г¤Г±ГЄГ®Г¬Гі", vehicleNames[UI.importModelId] or UI.importModelId)), 3, 3.0)
             end
 
             imgui.SameLine(0, gap)
-            if styleButton(u8"Закрыть (Esc)", theme.them, imgui.ImVec2(btnW, 30 * scale)) then
+            if styleButton(u8"Г‡Г ГЄГ°Г»ГІГј (Esc)", theme.them, imgui.ImVec2(btnW, 30 * scale)) then
                 UI.importModal[0] = false
             end
 
@@ -1595,7 +1595,7 @@ local function DrawSettingsModal(scale)
             UI.requestCloseModal = false
         end
 
-        imgui.TextUnformatted(u8"Настройки CarTool")
+        imgui.TextUnformatted(u8"ГЌГ Г±ГІГ°Г®Г©ГЄГЁ CarTool")
         imgui.SameLine()
         local ver_str = tostring(script_version)
         if not ver_str:find("%.") then ver_str = ver_str .. ".0" end
@@ -1607,7 +1607,7 @@ local function DrawSettingsModal(scale)
         local comboWidth = 240 * scale
         local btnOffset = comboWidth + imgui.GetStyle().ItemSpacing.x + 14 * scale
 
-        imgui.TextUnformatted(u8"Масштаб интерфейса:")
+        imgui.TextUnformatted(u8"ГЊГ Г±ГёГІГ ГЎ ГЁГ­ГІГҐГ°ГґГҐГ©Г±Г :")
         imgui.PushItemWidth(comboWidth)
         if imgui.SliderFloat("##UIScale", UI.uiScaleArr, 0.5, 2.0, "%.2f") then
             settings.uiScale = UI.uiScaleArr[0]
@@ -1616,7 +1616,7 @@ local function DrawSettingsModal(scale)
         end
         imgui.PopItemWidth()
         imgui.SameLine(btnOffset)
-        if imgui.Button(u8"По умолчанию", imgui.ImVec2(140 * scale, 0)) then
+        if imgui.Button(u8"ГЏГ® ГіГ¬Г®Г«Г·Г Г­ГЁГѕ", imgui.ImVec2(140 * scale, 0)) then
             settings.uiScale = 1.0
             UI.uiScaleArr[0] = 1.0
             UI.forceResize = true
@@ -1624,7 +1624,7 @@ local function DrawSettingsModal(scale)
         end
 
         imgui.Spacing()
-        imgui.TextUnformatted(u8"Положение уведомлений:")
+        imgui.TextUnformatted(u8"ГЏГ®Г«Г®Г¦ГҐГ­ГЁГҐ ГіГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГ©:")
         imgui.PushItemWidth(comboWidth)
         if imgui.BeginCombo("##NotifPosCombo", notifPositions[settings.notifPos]) then
             for i, posName in ipairs(notifPositions) do
@@ -1637,20 +1637,20 @@ local function DrawSettingsModal(scale)
         end
         imgui.PopItemWidth()
         imgui.SameLine(btnOffset)
-        if imgui.Button(u8"Проверка", imgui.ImVec2(140 * scale, 0)) then
-            showSystemNotification(u8"Тестовое уведомление CarTool!", 1)
+        if imgui.Button(u8"ГЏГ°Г®ГўГҐГ°ГЄГ ", imgui.ImVec2(140 * scale, 0)) then
+            showSystemNotification(u8"Г’ГҐГ±ГІГ®ГўГ®ГҐ ГіГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГҐ CarTool!", 1)
         end
 
         imgui.Spacing()
         imgui.Separator()
         imgui.Spacing()
 
-        if imgui.Checkbox(u8"Всплывающие системные уведомления", UI.notifyEventsBool) then
+        if imgui.Checkbox(u8"Г‚Г±ГЇГ«Г»ГўГ ГѕГ№ГЁГҐ Г±ГЁГ±ГІГҐГ¬Г­Г»ГҐ ГіГўГҐГ¤Г®Г¬Г«ГҐГ­ГЁГї", UI.notifyEventsBool) then
             settings.notifyEvents = UI.notifyEventsBool[0]
             saveConfig()
         end
 
-        if imgui.Checkbox(u8"Оставлять несохранённый цвет на авто после закрытия меню", UI.keepUnsavedBool) then
+        if imgui.Checkbox(u8"ГЋГ±ГІГ ГўГ«ГїГІГј Г­ГҐГ±Г®ГµГ°Г Г­ВёГ­Г­Г»Г© Г¶ГўГҐГІ Г­Г  Г ГўГІГ® ГЇГ®Г±Г«ГҐ Г§Г ГЄГ°Г»ГІГЁГї Г¬ГҐГ­Гѕ", UI.keepUnsavedBool) then
             settings.keepUnsavedColor = UI.keepUnsavedBool[0]
             if not settings.keepUnsavedColor then
                 unsavedCarColors = {}
@@ -1658,17 +1658,17 @@ local function DrawSettingsModal(scale)
             saveConfig()
         end
 
-        if imgui.Checkbox(u8"Автоматически применять сохранённый хендлинг при входе", UI.autoApplyHandlingBool) then
+        if imgui.Checkbox(u8"ГЂГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГЁ ГЇГ°ГЁГ¬ГҐГ­ГїГІГј Г±Г®ГµГ°Г Г­ВёГ­Г­Г»Г© ГµГҐГ­Г¤Г«ГЁГ­ГЈ ГЇГ°ГЁ ГўГµГ®Г¤ГҐ", UI.autoApplyHandlingBool) then
             settings.autoApplyHandling = UI.autoApplyHandlingBool[0]
             saveConfig()
         end
 
-        if imgui.Checkbox(u8"Автообновление скрипта", UI.autoUpdateBool) then
+        if imgui.Checkbox(u8"ГЂГўГІГ®Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ Г±ГЄГ°ГЁГЇГІГ ", UI.autoUpdateBool) then
             settings.autoUpdate = UI.autoUpdateBool[0]
             saveConfig()
         end
         imgui.SameLine()
-        if imgui.Button(u8"Проверить обновление") then
+        if imgui.Button(u8"ГЏГ°Г®ГўГҐГ°ГЁГІГј Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ") then
             checkUpdates(true)
         end
 
@@ -1681,7 +1681,7 @@ local function DrawSettingsModal(scale)
         if availRight > btnCloseW then
             imgui.SetCursorPosX(imgui.GetCursorPosX() + availRight - btnCloseW)
         end
-        if imgui.Button(u8"Закрыть", imgui.ImVec2(btnCloseW, 0)) then
+        if imgui.Button(u8"Г‡Г ГЄГ°Г»ГІГј", imgui.ImVec2(btnCloseW, 0)) then
             imgui.CloseCurrentPopup()
         end
 
@@ -1692,7 +1692,7 @@ end
 local function applyImportedColorString(rawStr, curCar)
     local s = trim(rawStr or "")
     if s == "" then
-        showSystemNotification(u8"Строка импорта пуста!", 2)
+        showSystemNotification(u8"Г‘ГІГ°Г®ГЄГ  ГЁГ¬ГЇГ®Г°ГІГ  ГЇГіГ±ГІГ !", 2)
         return false
     end
     local nums = {}
@@ -1701,7 +1701,7 @@ local function applyImportedColorString(rawStr, curCar)
         if #nums == 4 then break end
     end
     if #nums == 0 then
-        showSystemNotification(u8"Не найдено значений цвета (пример: 101,0,99,0)", 2)
+        showSystemNotification(u8"ГЌГҐ Г­Г Г©Г¤ГҐГ­Г® Г§Г­Г Г·ГҐГ­ГЁГ© Г¶ГўГҐГІГ  (ГЇГ°ГЁГ¬ГҐГ°: 101,0,99,0)", 2)
         return false
     end
     UI.c1[0] = nums[1] or 0
@@ -1716,7 +1716,7 @@ local function applyImportedColorString(rawStr, curCar)
         end
         applyColors(curCar, cols)
     end
-    showSystemNotification(u8(string.format("Импортированы цвета: %d, %d, %d, %d", UI.c1[0], UI.c2[0], UI.c3[0], UI.c4[0])), 1)
+    showSystemNotification(u8(string.format("Г€Г¬ГЇГ®Г°ГІГЁГ°Г®ГўГ Г­Г» Г¶ГўГҐГІГ : %d, %d, %d, %d", UI.c1[0], UI.c2[0], UI.c3[0], UI.c4[0])), 1)
     return true
 end
 
@@ -1724,7 +1724,7 @@ local function saveCurrentPreset(targetStr)
     local pStr = trim(targetStr)
     local cleanStr = cleanPlateText(pStr)
     if cleanStr == "" then
-        showSystemNotification(u8"Введите гос. номер или сядьте в авто с номером!", 2)
+        showSystemNotification(u8"Г‚ГўГҐГ¤ГЁГІГҐ ГЈГ®Г±. Г­Г®Г¬ГҐГ° ГЁГ«ГЁ Г±ГїГ¤ГјГІГҐ Гў Г ГўГІГ® Г± Г­Г®Г¬ГҐГ°Г®Г¬!", 2)
         return false
     end
 
@@ -1756,7 +1756,7 @@ local function saveCurrentPreset(targetStr)
 
     sessionColors[cleanStr] = {UI.c1[0], UI.c2[0], UI.c3[0], UI.c4[0]}
     saveConfig()
-    showSystemNotification(u8(string.format("Пресет покраски сохранён на номер: %s", cleanStr)), 1)
+    showSystemNotification(u8(string.format("ГЏГ°ГҐГ±ГҐГІ ГЇГ®ГЄГ°Г Г±ГЄГЁ Г±Г®ГµГ°Г Г­ВёГ­ Г­Г  Г­Г®Г¬ГҐГ°: %s", cleanStr)), 1)
     return true
 end
 
@@ -1811,7 +1811,7 @@ local function drawColorSlotCompact(slotIdx, label, intPtr, scale)
             UI.popupColorBuf[0] = intPtr[0]
             imgui.OpenPopup("ExactColorPopup_" .. slotIdx)
         end
-        imgui.SetTooltip(u8"ЛКМ / Ползунок — выбрать цвет\nКолёсико — изменить на ±1\nПКМ — ввести ID вручную")
+        imgui.SetTooltip(u8"Г‹ГЉГЊ / ГЏГ®Г«Г§ГіГ­Г®ГЄ В— ГўГ»ГЎГ°Г ГІГј Г¶ГўГҐГІ\nГЉГ®Г«ВёГ±ГЁГЄГ® В— ГЁГ§Г¬ГҐГ­ГЁГІГј Г­Г  В±1\nГЏГЉГЊ В— ГўГўГҐГ±ГІГЁ ID ГўГ°ГіГ·Г­ГіГѕ")
     end
 
     if imgui.BeginPopup("ExactColorPopup_" .. slotIdx) then
@@ -1879,17 +1879,17 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             end
         end
 
-        if styleButton(u8(string.format("Покраска (%d)", #presets)), UI.currentTab == 1 and theme.me or theme.them, imgui.ImVec2(140 * scale, 0)) then
+        if styleButton(u8(string.format("ГЏГ®ГЄГ°Г Г±ГЄГ  (%d)", #presets)), UI.currentTab == 1 and theme.me or theme.them, imgui.ImVec2(140 * scale, 0)) then
             UI.currentTab = 1
         end
 
         imgui.SameLine()
-        if styleButton(u8(string.format("Анти-Тюнинг (%d)", countBannedTuneModels())), UI.currentTab == 2 and theme.me or theme.them, imgui.ImVec2(155 * scale, 0)) then
+        if styleButton(u8(string.format("ГЂГ­ГІГЁ-Г’ГѕГ­ГЁГ­ГЈ (%d)", countBannedTuneModels())), UI.currentTab == 2 and theme.me or theme.them, imgui.ImVec2(155 * scale, 0)) then
             UI.currentTab = 2
         end
 
         imgui.SameLine()
-        if styleButton(u8(string.format("Хендлинг (%d)", countSavedHandlings())), UI.currentTab == 3 and theme.me or theme.them, imgui.ImVec2(145 * scale, 0)) then
+        if styleButton(u8(string.format("Г•ГҐГ­Г¤Г«ГЁГ­ГЈ (%d)", countSavedHandlings())), UI.currentTab == 3 and theme.me or theme.them, imgui.ImVec2(145 * scale, 0)) then
             UI.currentTab = 3
             if curModel then
                 UI.manualModelId = curModel
@@ -1901,13 +1901,13 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
         imgui.AlignTextToFramePadding()
         if curModel then
             local mName = vehicleNames[curModel] or "Unknown"
-            local plateHdr = (curPlate and curPlate ~= "") and curPlate or "Без номера"
-            imgui.TextColored(theme.online, u8(string.format("• %s [%d] | %s", mName, curModel, plateHdr)))
+            local plateHdr = (curPlate and curPlate ~= "") and curPlate or "ГЃГҐГ§ Г­Г®Г¬ГҐГ°Г "
+            imgui.TextColored(theme.online, u8(string.format("В• %s [%d] | %s", mName, curModel, plateHdr)))
         else
-            imgui.TextColored(theme.muted, u8"• Вне транспорта")
+            imgui.TextColored(theme.muted, u8"В• Г‚Г­ГҐ ГІГ°Г Г­Г±ГЇГ®Г°ГІГ ")
         end
 
-        local settingsBtnText = u8"Настройки"
+        local settingsBtnText = u8"ГЌГ Г±ГІГ°Г®Г©ГЄГЁ"
         local settingsBtnW = imgui.CalcTextSize(settingsBtnText).x + (framePadX * 2.0) + (12 * scale)
         imgui.SameLine()
         local availRight = imgui.GetContentRegionAvail().x
@@ -1934,8 +1934,8 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             dl:AddRectFilled(pMin, pMax, imgui.GetColorU32Vec4(imgui.ImVec4(theme.me.x, theme.me.y, theme.me.z, 0.35)), 6.0 * scale)
 
             local cPos = imgui.GetCursorPos()
-            local plateInfo = (curPlate and curPlate ~= "") and curPlate or "Нет номера"
-            local bannerStr = u8(string.format("Текущее авто: %s (ID: %d)   |   Номер: %s",
+            local plateInfo = (curPlate and curPlate ~= "") and curPlate or "ГЌГҐГІ Г­Г®Г¬ГҐГ°Г "
+            local bannerStr = u8(string.format("Г’ГҐГЄГіГ№ГҐГҐ Г ГўГІГ®: %s (ID: %d)   |   ГЌГ®Г¬ГҐГ°: %s",
                 vehicleNames[curModel] or "Unknown", curModel, plateInfo))
 
             dl:AddText(
@@ -1946,7 +1946,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
 
             local btnOffsetY = (barH - btnH) * 0.5
             if UI.currentTab == 1 then
-                local bReset = u8"Сбросить к родному цвету"
+                local bReset = u8"Г‘ГЎГ°Г®Г±ГЁГІГј ГЄ Г°Г®Г¤Г­Г®Г¬Гі Г¶ГўГҐГІГі"
                 local wReset = imgui.CalcTextSize(bReset).x + framePadX * 2 + 10 * scale
                 imgui.SetCursorPos(imgui.ImVec2(cPos.x + availW - wReset - 8 * scale, cPos.y + btnOffsetY))
                 if styleButton(bReset, theme.them, imgui.ImVec2(wReset, btnH)) and curId and originalColors[curId] then
@@ -1957,7 +1957,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                 end
             elseif UI.currentTab == 2 then
                 local isBanned = modelBools[curModel] and modelBools[curModel][0]
-                local b1 = isBanned and u8"Разрешить тюнинг авто" or u8"Убрать тюнинг авто"
+                local b1 = isBanned and u8"ГђГ Г§Г°ГҐГёГЁГІГј ГІГѕГ­ГЁГ­ГЈ Г ГўГІГ®" or u8"Г“ГЎГ°Г ГІГј ГІГѕГ­ГЁГ­ГЈ Г ГўГІГ®"
                 local w1 = imgui.CalcTextSize(b1).x + framePadX * 2 + 10 * scale
                 imgui.SetCursorPos(imgui.ImVec2(cPos.x + availW - w1 - 8 * scale, cPos.y + btnOffsetY))
                 if styleButton(b1, isBanned and theme.warn or theme.me, imgui.ImVec2(w1, btnH)) then
@@ -1966,8 +1966,8 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                     purgeAllStreamedVehicles()
                 end
             elseif UI.currentTab == 3 then
-                local b1 = u8"Внести изменения"
-                local b2 = u8"Сбросить"
+                local b1 = u8"Г‚Г­ГҐГ±ГІГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї"
+                local b2 = u8"Г‘ГЎГ°Г®Г±ГЁГІГј"
                 local w1 = imgui.CalcTextSize(b1).x + framePadX * 2 + 10 * scale
                 local w2 = imgui.CalcTextSize(b2).x + framePadX * 2 + 10 * scale
                 local totW = w1 + w2 + spaceX
@@ -1981,7 +1981,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                     savedHandlings[curModel] = nil
                     loadModelHandlingToManualUI(curModel)
                     saveConfig()
-                    showSystemNotification(u8"Хендлинг текущего авто сброшен к стандарту", 3)
+                    showSystemNotification(u8"Г•ГҐГ­Г¤Г«ГЁГ­ГЈ ГІГҐГЄГіГ№ГҐГЈГ® Г ГўГІГ® Г±ГЎГ°Г®ГёГҐГ­ ГЄ Г±ГІГ Г­Г¤Г Г°ГІГі", 3)
                 end
             end
 
@@ -1999,7 +1999,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             end
             imgui.SameLine(0, 6 * scale)
             imgui.AlignTextToFramePadding()
-            imgui.TextUnformatted(u8"Предпросмотр")
+            imgui.TextUnformatted(u8"ГЏГ°ГҐГ¤ГЇГ°Г®Г±Г¬Г®ГІГ°")
 
             imgui.SameLine(0, 14 * scale)
             if ToggleButton("##sw_palette", UI.showPaletteBool, scale) then
@@ -2008,10 +2008,10 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             end
             imgui.SameLine(0, 6 * scale)
             imgui.AlignTextToFramePadding()
-            imgui.TextUnformatted(u8"Палитра GTA")
+            imgui.TextUnformatted(u8"ГЏГ Г«ГЁГІГ°Г  GTA")
 
-            local saveBtnText = u8"Сохранить"
-            local impBtnText = u8"Импорт"
+            local saveBtnText = u8"Г‘Г®ГµГ°Г Г­ГЁГІГј"
+            local impBtnText = u8"Г€Г¬ГЇГ®Г°ГІ"
             local saveBtnW = imgui.CalcTextSize(saveBtnText).x + framePadX * 2 + 14 * scale
             local impBtnW = imgui.CalcTextSize(impBtnText).x + framePadX * 2 + 14 * scale
             local inputW = 175 * scale
@@ -2024,7 +2024,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             end
 
             imgui.PushItemWidth(inputW)
-            imgui.InputTextWithHint("##input_plate", u8"Номер", UI.inputPlate, 64)
+            imgui.InputTextWithHint("##input_plate", u8"ГЌГ®Г¬ГҐГ°", UI.inputPlate, 64)
             imgui.PopItemWidth()
 
             imgui.SameLine(0, spaceX)
@@ -2046,7 +2046,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                             applyColors(curCar, {UI.c1[0], UI.c2[0], UI.c3[0], UI.c4[0]})
                         end
                     else
-                        showSystemNotification(u8"У текущего авто нет номера! Введите номер вручную.", 2)
+                        showSystemNotification(u8"Г“ ГІГҐГЄГіГ№ГҐГЈГ® Г ГўГІГ® Г­ГҐГІ Г­Г®Г¬ГҐГ°Г ! Г‚ГўГҐГ¤ГЁГІГҐ Г­Г®Г¬ГҐГ° ГўГ°ГіГ·Г­ГіГѕ.", 2)
                     end
                 end
             end
@@ -2062,11 +2062,11 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                         applyImportedColorString(clip, curCar)
                     end
                 end
-                imgui.SetTooltip(u8"ЛКМ — открыть окно импорта (101,0,99,0)\nПКМ — мгновенно вставить из буфера обмена")
+                imgui.SetTooltip(u8"Г‹ГЉГЊ В— Г®ГІГЄГ°Г»ГІГј Г®ГЄГ­Г® ГЁГ¬ГЇГ®Г°ГІГ  (101,0,99,0)\nГЏГЉГЊ В— Г¬ГЈГ­Г®ГўГҐГ­Г­Г® ГўГ±ГІГ ГўГЁГІГј ГЁГ§ ГЎГіГґГҐГ°Г  Г®ГЎГ¬ГҐГ­Г ")
             end
 
             if imgui.BeginPopup("ImportColorPopup") then
-                imgui.TextUnformatted(u8"Импорт цвета (формат: 101,0,99,0):")
+                imgui.TextUnformatted(u8"Г€Г¬ГЇГ®Г°ГІ Г¶ГўГҐГІГ  (ГґГ®Г°Г¬Г ГІ: 101,0,99,0):")
                 imgui.PushItemWidth(210 * scale)
                 local enterPressed = imgui.InputTextWithHint("##imp_clr_str", "101,0,99,0", UI.importColorBuf, 64, imgui.InputTextFlags.EnterReturnsTrue)
                 imgui.PopItemWidth()
@@ -2077,14 +2077,14 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                     end
                 end
                 imgui.Spacing()
-                if imgui.Button(u8"Применить", imgui.ImVec2(100 * scale, 0)) then
+                if imgui.Button(u8"ГЏГ°ГЁГ¬ГҐГ­ГЁГІГј", imgui.ImVec2(100 * scale, 0)) then
                     if applyImportedColorString(u8:decode(ffi.string(UI.importColorBuf)), curCar) then
                         ffi.fill(UI.importColorBuf, ffi.sizeof(UI.importColorBuf), 0)
                         imgui.CloseCurrentPopup()
                     end
                 end
                 imgui.SameLine(0, spaceX)
-                if styleButton(u8"Из буфера", theme.them, imgui.ImVec2(102 * scale, 0)) then
+                if styleButton(u8"Г€Г§ ГЎГіГґГҐГ°Г ", theme.them, imgui.ImVec2(102 * scale, 0)) then
                     local clip = getClipboardText()
                     if clip and clip ~= "" then
                         if applyImportedColorString(clip, curCar) then
@@ -2102,13 +2102,13 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             imgui.BeginChild("##paintTopBox", imgui.ImVec2(0, topBoxH), true, imgui.WindowFlags.NoScrollbar + imgui.WindowFlags.NoScrollWithMouse)
 
             imgui.Columns(2, "ColorSlotsGrid", false)
-            drawColorSlotCompact(1, u8"Основной 1:", UI.c1, scale)
+            drawColorSlotCompact(1, u8"ГЋГ±Г­Г®ГўГ­Г®Г© 1:", UI.c1, scale)
             imgui.Spacing()
-            drawColorSlotCompact(2, u8"Основной 2:", UI.c2, scale)
+            drawColorSlotCompact(2, u8"ГЋГ±Г­Г®ГўГ­Г®Г© 2:", UI.c2, scale)
             imgui.NextColumn()
-            drawColorSlotCompact(3, u8"Дополнительный 1:", UI.c3, scale)
+            drawColorSlotCompact(3, u8"Г„Г®ГЇГ®Г«Г­ГЁГІГҐГ«ГјГ­Г»Г© 1:", UI.c3, scale)
             imgui.Spacing()
-            drawColorSlotCompact(4, u8"Дополнительный 2:", UI.c4, scale)
+            drawColorSlotCompact(4, u8"Г„Г®ГЇГ®Г«Г­ГЁГІГҐГ«ГјГ­Г»Г© 2:", UI.c4, scale)
             imgui.Columns(1)
 
             if settings.showPalette then
@@ -2152,7 +2152,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                         local isHov = imgui.IsItemHovered()
                         if isHov then
                             imgui.SetMouseCursor(imgui.MouseCursor.Hand)
-                            imgui.SetTooltip(u8("ID цвета: " .. idx))
+                            imgui.SetTooltip(u8("ID Г¶ГўГҐГІГ : " .. idx))
                         end
                         imgui.PopID()
 
@@ -2172,7 +2172,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
 
             imgui.Spacing()
             imgui.PushItemWidth(imgui.GetContentRegionAvail().x)
-            imgui.InputTextWithHint("##presetSearch", u8"Поиск в сохранённых пресетах", UI.presetSearch, ffi.sizeof(UI.presetSearch))
+            imgui.InputTextWithHint("##presetSearch", u8"ГЏГ®ГЁГ±ГЄ Гў Г±Г®ГµГ°Г Г­ВёГ­Г­Г»Гµ ГЇГ°ГҐГ±ГҐГІГ Гµ", UI.presetSearch, ffi.sizeof(UI.presetSearch))
             imgui.PopItemWidth()
 
             imgui.Spacing()
@@ -2231,8 +2231,8 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                     imgui.SameLine(0, 6 * scale)
                     DrawColorBoxWithId("##pc4", p.c4, boxW, boxH, scale, false)
 
-                    local applyLabel = u8"Применить к нынешнему"
-                    local updLabel = u8"Обновить"
+                    local applyLabel = u8"ГЏГ°ГЁГ¬ГҐГ­ГЁГІГј ГЄ Г­Г»Г­ГҐГёГ­ГҐГ¬Гі"
+                    local updLabel = u8"ГЋГЎГ­Г®ГўГЁГІГј"
                     local applyW = imgui.CalcTextSize(applyLabel).x + framePadX * 2 + 10 * scale
                     local updW = imgui.CalcTextSize(updLabel).x + framePadX * 2 + 10 * scale
                     local delW = 28 * scale
@@ -2244,9 +2244,9 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                         if curCar and doesVehicleExist(curCar) then
                             unsavedCarColors[curCar] = {p.c1, p.c2, p.c3, p.c4}
                             applyColors(curCar, {p.c1, p.c2, p.c3, p.c4})
-                            showSystemNotification(u8"Пресет применён к нынешнему автомобилю", 1)
+                            showSystemNotification(u8"ГЏГ°ГҐГ±ГҐГІ ГЇГ°ГЁГ¬ГҐГ­ВёГ­ ГЄ Г­Г»Г­ГҐГёГ­ГҐГ¬Гі Г ГўГІГ®Г¬Г®ГЎГЁГ«Гѕ", 1)
                         else
-                            showSystemNotification(u8"Цвета пресета выбраны", 1)
+                            showSystemNotification(u8"Г–ГўГҐГІГ  ГЇГ°ГҐГ±ГҐГІГ  ГўГ»ГЎГ°Г Г­Г»", 1)
                         end
                     end
 
@@ -2262,7 +2262,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                             applyColors(curCar, {p.c1, p.c2, p.c3, p.c4})
                         end
                         saveConfig()
-                        showSystemNotification(u8"Пресет обновлён", 1)
+                        showSystemNotification(u8"ГЏГ°ГҐГ±ГҐГІ Г®ГЎГ­Г®ГўГ«ВёГ­", 1)
                     end
 
                     imgui.SameLine(0, spaceX)
@@ -2285,13 +2285,13 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                 if curCar then
                     restoreVehicleColor(curId, curCar)
                 end
-                showSystemNotification(u8"Пресет удалён", 3)
+                showSystemNotification(u8"ГЏГ°ГҐГ±ГҐГІ ГіГ¤Г Г«ВёГ­", 3)
             end
 
             if visibleCount == 0 then
                 local emptyText = (#presets == 0)
-                    and u8"Сохранённых пресетов пока нет. Выберите цвета сверху и нажмите «Сохранить»."
-                    or u8"По вашему запросу пресетов не найдено."
+                    and u8"Г‘Г®ГµГ°Г Г­ВёГ­Г­Г»Гµ ГЇГ°ГҐГ±ГҐГІГ®Гў ГЇГ®ГЄГ  Г­ГҐГІ. Г‚Г»ГЎГҐГ°ГЁГІГҐ Г¶ГўГҐГІГ  Г±ГўГҐГ°ГµГі ГЁ Г­Г Г¦Г¬ГЁГІГҐ В«Г‘Г®ГµГ°Г Г­ГЁГІГјВ»."
+                    or u8"ГЏГ® ГўГ ГёГҐГ¬Гі Г§Г ГЇГ°Г®Г±Гі ГЇГ°ГҐГ±ГҐГІГ®Гў Г­ГҐ Г­Г Г©Г¤ГҐГ­Г®."
                 local tSize = imgui.CalcTextSize(emptyText)
                 local avail = imgui.GetContentRegionAvail()
                 local cPos = imgui.GetCursorPos()
@@ -2309,7 +2309,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             end
             imgui.SameLine(0, 6 * scale)
             imgui.AlignTextToFramePadding()
-            imgui.TextUnformatted(u8"Отключить весь тюнинг")
+            imgui.TextUnformatted(u8"ГЋГІГЄГ«ГѕГ·ГЁГІГј ГўГҐГ±Гј ГІГѕГ­ГЁГ­ГЈ")
 
             imgui.SameLine(0, 14 * scale)
             if ToggleButton("##sw_dis_vinyls", UI.disableVinylsBool, scale) then
@@ -2319,7 +2319,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             end
             imgui.SameLine(0, 6 * scale)
             imgui.AlignTextToFramePadding()
-            imgui.TextUnformatted(u8"Удалять винилы")
+            imgui.TextUnformatted(u8"Г“Г¤Г Г«ГїГІГј ГўГЁГ­ГЁГ«Г»")
 
             imgui.SameLine(0, 14 * scale)
             if ToggleButton("##sw_auto_ml", UI.autoModloaderBool, scale) then
@@ -2330,10 +2330,10 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             end
             imgui.SameLine(0, 6 * scale)
             imgui.AlignTextToFramePadding()
-            imgui.TextUnformatted(u8"Авто Modloader")
+            imgui.TextUnformatted(u8"ГЂГўГІГ® Modloader")
 
-            local rescanText = u8"Сканировать Modloader"
-            local purgeText = u8"Очистить стрим"
+            local rescanText = u8"Г‘ГЄГ Г­ГЁГ°Г®ГўГ ГІГј Modloader"
+            local purgeText = u8"ГЋГ·ГЁГ±ГІГЁГІГј Г±ГІГ°ГЁГ¬"
             local rescanW = imgui.CalcTextSize(rescanText).x + framePadX * 2 + 10 * scale
             local purgeW = imgui.CalcTextSize(purgeText).x + framePadX * 2 + 10 * scale
             imgui.SameLine()
@@ -2344,21 +2344,21 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             if styleButton(rescanText, theme.them, imgui.ImVec2(rescanW, 0)) then
                 scanModloader()
                 purgeAllStreamedVehicles()
-                showSystemNotification(u8"Папка Modloader просканирована", 1)
+                showSystemNotification(u8"ГЏГ ГЇГЄГ  Modloader ГЇГ°Г®Г±ГЄГ Г­ГЁГ°Г®ГўГ Г­Г ", 1)
             end
             imgui.SameLine(0, spaceX)
             if imgui.Button(purgeText, imgui.ImVec2(purgeW, 0)) then
                 purgeAllStreamedVehicles()
-                showSystemNotification(u8"Тюнинг и винилы очищены на всех авто в стриме", 1)
+                showSystemNotification(u8"Г’ГѕГ­ГЁГ­ГЈ ГЁ ГўГЁГ­ГЁГ«Г» Г®Г·ГЁГ№ГҐГ­Г» Г­Г  ГўГ±ГҐГµ Г ГўГІГ® Гў Г±ГІГ°ГЁГ¬ГҐ", 1)
             end
 
             imgui.Spacing()
 
             local filters = {
-                { id = 1, label = u8"Все модели" },
-                { id = 2, label = u8"Только активные" },
-                { id = 3, label = u8"Из Modloader" },
-                { id = 4, label = u8"Сейчас в стриме" }
+                { id = 1, label = u8"Г‚Г±ГҐ Г¬Г®Г¤ГҐГ«ГЁ" },
+                { id = 2, label = u8"Г’Г®Г«ГјГЄГ® Г ГЄГІГЁГўГ­Г»ГҐ" },
+                { id = 3, label = u8"Г€Г§ Modloader" },
+                { id = 4, label = u8"Г‘ГҐГ©Г·Г Г± Гў Г±ГІГ°ГЁГ¬ГҐ" }
             }
             for _, f in ipairs(filters) do
                 if styleButton(f.label .. "##tflt_" .. f.id, UI.tuneFilterMode == f.id and theme.me or theme.them) then
@@ -2367,8 +2367,8 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                 imgui.SameLine(0, 4 * scale)
             end
 
-            local btnOnAll = u8"Включить все"
-            local btnOffAll = u8"Выключить все"
+            local btnOnAll = u8"Г‚ГЄГ«ГѕГ·ГЁГІГј ГўГ±ГҐ"
+            local btnOffAll = u8"Г‚Г»ГЄГ«ГѕГ·ГЁГІГј ГўГ±ГҐ"
             local wOn = imgui.CalcTextSize(btnOnAll).x + framePadX * 2 + 10 * scale
             local wOff = imgui.CalcTextSize(btnOffAll).x + framePadX * 2 + 10 * scale
             imgui.SameLine()
@@ -2389,7 +2389,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
 
             imgui.Spacing()
             imgui.PushItemWidth(imgui.GetContentRegionAvail().x)
-            imgui.InputTextWithHint("##tuneSearch", u8"Поиск автомобиля по названию или Model ID (400-611)...", UI.tuneSearch, ffi.sizeof(UI.tuneSearch))
+            imgui.InputTextWithHint("##tuneSearch", u8"ГЏГ®ГЁГ±ГЄ Г ГўГІГ®Г¬Г®ГЎГЁГ«Гї ГЇГ® Г­Г Г§ГўГ Г­ГЁГѕ ГЁГ«ГЁ Model ID (400-611)...", UI.tuneSearch, ffi.sizeof(UI.tuneSearch))
             imgui.PopItemWidth()
 
             imgui.Spacing()
@@ -2446,24 +2446,24 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
             imgui.EndChild()
 
         elseif UI.currentTab == 3 then
-            if imgui.Button(u8"Внести изменения (из строки)", imgui.ImVec2(225 * scale, 0)) then
+            if imgui.Button(u8"Г‚Г­ГҐГ±ГІГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї (ГЁГ§ Г±ГІГ°Г®ГЄГЁ)", imgui.ImVec2(225 * scale, 0)) then
                 openHandlingImportWindow(curModel or UI.manualModelId)
             end
 
             imgui.SameLine(0, spaceX)
-            if styleButton(u8"Изменённые авто", UI.handSubMode == 1 and theme.me or theme.them, imgui.ImVec2(145 * scale, 0)) then
+            if styleButton(u8"Г€Г§Г¬ГҐГ­ВёГ­Г­Г»ГҐ Г ГўГІГ®", UI.handSubMode == 1 and theme.me or theme.them, imgui.ImVec2(145 * scale, 0)) then
                 UI.handSubMode = 1
             end
 
             imgui.SameLine(0, spaceX)
-            if styleButton(u8"Ручная настройка", UI.handSubMode == 2 and theme.me or theme.them, imgui.ImVec2(165 * scale, 0)) then
+            if styleButton(u8"ГђГіГ·Г­Г Гї Г­Г Г±ГІГ°Г®Г©ГЄГ ", UI.handSubMode == 2 and theme.me or theme.them, imgui.ImVec2(165 * scale, 0)) then
                 UI.handSubMode = 2
                 if curModel then UI.manualModelId = curModel end
                 loadModelHandlingToManualUI(UI.manualModelId)
             end
 
             local isConfReset = (os.clock() < UI.confirmResetAllHandTimer)
-            local resetAllLabel = isConfReset and u8"Подтвердить сброс?" or u8"Сбросить все"
+            local resetAllLabel = isConfReset and u8"ГЏГ®Г¤ГІГўГҐГ°Г¤ГЁГІГј Г±ГЎГ°Г®Г±?" or u8"Г‘ГЎГ°Г®Г±ГЁГІГј ГўГ±ГҐ"
             local resetAllW = imgui.CalcTextSize(resetAllLabel).x + framePadX * 2 + 12 * scale
             imgui.SameLine()
             local availHandR = imgui.GetContentRegionAvail().x
@@ -2480,7 +2480,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                     end
                     savedHandlings = {}
                     saveConfig()
-                    showSystemNotification(u8"Весь изменённый хендлинг сброшен к стандарту", 1)
+                    showSystemNotification(u8"Г‚ГҐГ±Гј ГЁГ§Г¬ГҐГ­ВёГ­Г­Г»Г© ГµГҐГ­Г¤Г«ГЁГ­ГЈ Г±ГЎГ°Г®ГёГҐГ­ ГЄ Г±ГІГ Г­Г¤Г Г°ГІГі", 1)
                 end
             end
 
@@ -2488,7 +2488,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
 
             if UI.handSubMode == 1 then
                 imgui.PushItemWidth(imgui.GetContentRegionAvail().x)
-                imgui.InputTextWithHint("##handSearch", u8"Поиск по сохранённым автомобилям (название или ID)...", UI.handSearch, ffi.sizeof(UI.handSearch))
+                imgui.InputTextWithHint("##handSearch", u8"ГЏГ®ГЁГ±ГЄ ГЇГ® Г±Г®ГµГ°Г Г­ВёГ­Г­Г»Г¬ Г ГўГІГ®Г¬Г®ГЎГЁГ«ГїГ¬ (Г­Г Г§ГўГ Г­ГЁГҐ ГЁГ«ГЁ ID)...", UI.handSearch, ffi.sizeof(UI.handSearch))
                 imgui.PopItemWidth()
 
                 imgui.Spacing()
@@ -2531,10 +2531,10 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                             entry.enabled = enBool[0]
                             if entry.enabled then
                                 applySavedHandlingEntry(mId, entry)
-                                showSystemNotification(u8(string.format("Хендлинг %s включён", vName)), 1)
+                                showSystemNotification(u8(string.format("Г•ГҐГ­Г¤Г«ГЁГ­ГЈ %s ГўГЄГ«ГѕГ·ВёГ­", vName)), 1)
                             else
                                 resetModelHandlingToDefault(mId)
-                                showSystemNotification(u8(string.format("Хендлинг %s временно выключен", vName)), 3)
+                                showSystemNotification(u8(string.format("Г•ГҐГ­Г¤Г«ГЁГ­ГЈ %s ГўГ°ГҐГ¬ГҐГ­Г­Г® ГўГ»ГЄГ«ГѕГ·ГҐГ­", vName)), 3)
                             end
                             saveConfig()
                         end
@@ -2545,10 +2545,10 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
 
                         imgui.SameLine(0, 10 * scale)
                         imgui.TextColored(entry.safeMode and theme.online or theme.warn,
-                            entry.safeMode and u8"[Безопасный режим: Подвеска и колёса]" or u8"[Полная замена строки]")
+                            entry.safeMode and u8"[ГЃГҐГ§Г®ГЇГ Г±Г­Г»Г© Г°ГҐГ¦ГЁГ¬: ГЏГ®Г¤ГўГҐГ±ГЄГ  ГЁ ГЄГ®Г«ВёГ±Г ]" or u8"[ГЏГ®Г«Г­Г Гї Г§Г Г¬ГҐГ­Г  Г±ГІГ°Г®ГЄГЁ]")
 
                         imgui.SameLine(0, 10 * scale)
-                        imgui.TextColored(theme.subtext, u8(string.format("Параметров: %d", paramCount)))
+                        imgui.TextColored(theme.subtext, u8(string.format("ГЏГ Г°Г Г¬ГҐГІГ°Г®Гў: %d", paramCount)))
 
                         local editBtnW = 105 * scale
                         local manualBtnW = 105 * scale
@@ -2556,7 +2556,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                         local rightClusterW = editBtnW + manualBtnW + delBtnW + spaceX * 2
 
                         imgui.SameLine(availW - rightClusterW - padX)
-                        if imgui.Button(u8"Строка##h_imp_" .. mId, imgui.ImVec2(editBtnW, 24 * scale)) then
+                        if imgui.Button(u8"Г‘ГІГ°Г®ГЄГ ##h_imp_" .. mId, imgui.ImVec2(editBtnW, 24 * scale)) then
                             ffi.fill(UI.importLineBuf, ffi.sizeof(UI.importLineBuf), 0)
                             ffi.copy(UI.importLineBuf, u8(entry.rawLine or ""))
                             UI.importSafeMode[0] = entry.safeMode
@@ -2564,7 +2564,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                         end
 
                         imgui.SameLine(0, spaceX)
-                        if styleButton(u8"Ползунки##h_man_" .. mId, theme.them, imgui.ImVec2(manualBtnW, 24 * scale)) then
+                        if styleButton(u8"ГЏГ®Г«Г§ГіГ­ГЄГЁ##h_man_" .. mId, theme.them, imgui.ImVec2(manualBtnW, 24 * scale)) then
                             UI.manualModelId = mId
                             loadModelHandlingToManualUI(mId)
                             UI.handSubMode = 2
@@ -2576,11 +2576,11 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                         end
 
                         imgui.SetCursorPos(imgui.ImVec2(startPos.x + padX, startPos.y + padY + 30 * scale))
-                        local previewLine = (entry.rawLine and entry.rawLine ~= "") and entry.rawLine or "Настроено вручную через редактор параметров"
+                        local previewLine = (entry.rawLine and entry.rawLine ~= "") and entry.rawLine or "ГЌГ Г±ГІГ°Г®ГҐГ­Г® ГўГ°ГіГ·Г­ГіГѕ Г·ГҐГ°ГҐГ§ Г°ГҐГ¤Г ГЄГІГ®Г° ГЇГ Г°Г Г¬ГҐГІГ°Г®Гў"
                         if #previewLine > 95 then
                             previewLine = previewLine:sub(1, 95) .. "..."
                         end
-                        imgui.TextColored(theme.muted, u8("Строка: " .. previewLine))
+                        imgui.TextColored(theme.muted, u8("Г‘ГІГ°Г®ГЄГ : " .. previewLine))
 
                         imgui.SetCursorPos(imgui.ImVec2(startPos.x, startPos.y + cardH + 6 * scale))
                     end
@@ -2590,11 +2590,11 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                     resetModelHandlingToDefault(toRemoveModel)
                     savedHandlings[toRemoveModel] = nil
                     saveConfig()
-                    showSystemNotification(u8"Хендлинг автомобиля сброшен и удалён", 3)
+                    showSystemNotification(u8"Г•ГҐГ­Г¤Г«ГЁГ­ГЈ Г ГўГІГ®Г¬Г®ГЎГЁГ«Гї Г±ГЎГ°Г®ГёГҐГ­ ГЁ ГіГ¤Г Г«ВёГ­", 3)
                 end
 
                 if visibleCount == 0 then
-                    local emptyText = u8"Список изменённых авто пуст. Нажмите «Внести изменения (из строки)», чтобы настроить подвеску или хендлинг."
+                    local emptyText = u8"Г‘ГЇГЁГ±Г®ГЄ ГЁГ§Г¬ГҐГ­ВёГ­Г­Г»Гµ Г ГўГІГ® ГЇГіГ±ГІ. ГЌГ Г¦Г¬ГЁГІГҐ В«Г‚Г­ГҐГ±ГІГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї (ГЁГ§ Г±ГІГ°Г®ГЄГЁ)В», Г·ГІГ®ГЎГ» Г­Г Г±ГІГ°Г®ГЁГІГј ГЇГ®Г¤ГўГҐГ±ГЄГі ГЁГ«ГЁ ГµГҐГ­Г¤Г«ГЁГ­ГЈ."
                     local tSize = imgui.CalcTextSize(emptyText)
                     local avail = imgui.GetContentRegionAvail()
                     local cPos = imgui.GetCursorPos()
@@ -2606,7 +2606,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
 
             else
                 imgui.AlignTextToFramePadding()
-                imgui.TextColored(theme.muted, u8"Модель:")
+                imgui.TextColored(theme.muted, u8"ГЊГ®Г¤ГҐГ«Гј:")
                 imgui.SameLine(0, 8 * scale)
 
                 local mSelName = string.format("%s [ID: %d]", vehicleNames[UI.manualModelId] or "Unknown", UI.manualModelId)
@@ -2624,7 +2624,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                 imgui.PopItemWidth()
 
                 imgui.SameLine(0, spaceX)
-                if imgui.Button(u8"Применить настройки") then
+                if imgui.Button(u8"ГЏГ°ГЁГ¬ГҐГ­ГЁГІГј Г­Г Г±ГІГ°Г®Г©ГЄГЁ") then
                     backupDefaultHandling(UI.manualModelId)
                     local baseAddr = getHandlingBaseAddr(UI.manualModelId)
                     if baseAddr then
@@ -2647,31 +2647,31 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                             values = vals
                         }
                         saveConfig()
-                        showSystemNotification(u8(string.format("Параметры %s обновлены!", vehicleNames[UI.manualModelId] or UI.manualModelId)), 1)
+                        showSystemNotification(u8(string.format("ГЏГ Г°Г Г¬ГҐГІГ°Г» %s Г®ГЎГ­Г®ГўГ«ГҐГ­Г»!", vehicleNames[UI.manualModelId] or UI.manualModelId)), 1)
                     end
                 end
 
                 imgui.SameLine(0, spaceX)
-                if styleButton(u8"Перечитать из памяти", theme.them) then
+                if styleButton(u8"ГЏГҐГ°ГҐГ·ГЁГІГ ГІГј ГЁГ§ ГЇГ Г¬ГїГІГЁ", theme.them) then
                     loadModelHandlingToManualUI(UI.manualModelId)
                 end
 
                 imgui.SameLine(0, spaceX)
-                if styleButton(u8"Сбросить к стандарту", theme.danger) then
+                if styleButton(u8"Г‘ГЎГ°Г®Г±ГЁГІГј ГЄ Г±ГІГ Г­Г¤Г Г°ГІГі", theme.danger) then
                     resetModelHandlingToDefault(UI.manualModelId)
                     savedHandlings[UI.manualModelId] = nil
                     loadModelHandlingToManualUI(UI.manualModelId)
                     saveConfig()
-                    showSystemNotification(u8"Возвращены стандартные настройки модели", 3)
+                    showSystemNotification(u8"Г‚Г®Г§ГўГ°Г Г№ГҐГ­Г» Г±ГІГ Г­Г¤Г Г°ГІГ­Г»ГҐ Г­Г Г±ГІГ°Г®Г©ГЄГЁ Г¬Г®Г¤ГҐГ«ГЁ", 3)
                 end
 
                 imgui.Spacing()
                 imgui.BeginChild("##manualEditorChild", imgui.ImVec2(0, 0), true)
 
                 local catNames = {
-                    [1] = u8"Настройки подвески и посадки (Suspension)",
-                    [2] = u8"Колёса, сцепление и центр тяжести (Wheels & Centre of Mass)",
-                    [3] = u8"Двигатель, разгон, масса и тормоза (Engine & Physical)"
+                    [1] = u8"ГЌГ Г±ГІГ°Г®Г©ГЄГЁ ГЇГ®Г¤ГўГҐГ±ГЄГЁ ГЁ ГЇГ®Г±Г Г¤ГЄГЁ (Suspension)",
+                    [2] = u8"ГЉГ®Г«ВёГ±Г , Г±Г¶ГҐГЇГ«ГҐГ­ГЁГҐ ГЁ Г¶ГҐГ­ГІГ° ГІГїГ¦ГҐГ±ГІГЁ (Wheels & Centre of Mass)",
+                    [3] = u8"Г„ГўГЁГЈГ ГІГҐГ«Гј, Г°Г Г§ГЈГ®Г­, Г¬Г Г±Г±Г  ГЁ ГІГ®Г°Г¬Г®Г§Г  (Engine & Physical)"
                 }
 
                 for catId = 1, 3 do
@@ -2682,7 +2682,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                         if f.cat == catId then
                             imgui.PushItemWidth(155 * scale)
                             if f.type == "drive" then
-                                local items = { "RWD (Задний)", "FWD (Передний)", "AWD (Полный)" }
+                                local items = { "RWD (Г‡Г Г¤Г­ГЁГ©)", "FWD (ГЏГҐГ°ГҐГ¤Г­ГЁГ©)", "AWD (ГЏГ®Г«Г­Г»Г©)" }
                                 if imgui.BeginCombo(u8(f.label) .. "##m_" .. f.key, u8(items[manualBuffers[f.key][0] + 1] or items[1])) then
                                     for idx, it in ipairs(items) do
                                         if imgui.Selectable(u8(it), manualBuffers[f.key][0] == (idx - 1)) then
@@ -2692,7 +2692,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                                     imgui.EndCombo()
                                 end
                             elseif f.type == "eng" then
-                                local items = { "Petrol (Бензин)", "Diesel (Дизель)", "Electric (Электро)" }
+                                local items = { "Petrol (ГЃГҐГ­Г§ГЁГ­)", "Diesel (Г„ГЁГ§ГҐГ«Гј)", "Electric (ГќГ«ГҐГЄГІГ°Г®)" }
                                 if imgui.BeginCombo(u8(f.label) .. "##m_" .. f.key, u8(items[manualBuffers[f.key][0] + 1] or items[1])) then
                                     for idx, it in ipairs(items) do
                                         if imgui.Selectable(u8(it), manualBuffers[f.key][0] == (idx - 1)) then
@@ -2702,7 +2702,7 @@ imgui.OnFrame(function() return UI.windowState[0] end, function()
                                     imgui.EndCombo()
                                 end
                             elseif f.type == "abs" then
-                                local items = { "Выключен (0)", "Включён (1)" }
+                                local items = { "Г‚Г»ГЄГ«ГѕГ·ГҐГ­ (0)", "Г‚ГЄГ«ГѕГ·ВёГ­ (1)" }
                                 if imgui.BeginCombo(u8(f.label) .. "##m_" .. f.key, u8(items[manualBuffers[f.key][0] + 1] or items[1])) then
                                     for idx, it in ipairs(items) do
                                         if imgui.Selectable(u8(it), manualBuffers[f.key][0] == (idx - 1)) then
