@@ -740,18 +740,42 @@ end
 local function convertUtf8ToCp1251IfNeeded(code)
     if not code or code == "" then return code, false end
     local changed = false
+
     if code:sub(1, 3) == "\239\187\191" then
         code = code:sub(4)
         changed = true
     end
-    local checkArea = code:gsub('b1%s*==%s*0xD0', '')
-    if checkArea:find("\208[\128-\191]") or checkArea:find("\209[\128-\191]") then
-        local ok, decoded = pcall(function() return u8:decode(code) end)
-        if ok and decoded and decoded ~= "" then
-            code = decoded
-            changed = true
-        end
+
+    if code:find("\195[\128-\191]\195[\128-\191]") then
+        code = code:gsub("\195([\128-\191])", function(c)
+            return string.char(c:byte(1) + 64)
+        end)
+        code = code:gsub("\194([\128-\191])", function(c)
+            return c
+        end)
+        changed = true
     end
+
+    if code:find("[\208\209][\128-\191][\208\209][\128-\191]") then
+        local ok, decoded = pcall(function() return u8:decode(code) end)
+        if ok and decoded and decoded ~= "" and not decoded:find("[\208\209][\128-\191][\208\209][\128-\191]") then
+            code = decoded
+        else
+            code = code
+                :gsub("\226\128\162", "\149")
+                :gsub("\226\128\148", "\151")
+                :gsub("\226\128\147", "\150")
+                :gsub("\226\132\150", "\185")
+                :gsub("\194\171", "\171")
+                :gsub("\194\187", "\187")
+                :gsub("\208\129", "\168")
+                :gsub("\209\145", "\184")
+                :gsub("\208([\144-\191])", function(c) return string.char(c:byte(1) + 48) end)
+                :gsub("\209([\128-\143])", function(c) return string.char(c:byte(1) + 112) end)
+        end
+        changed = true
+    end
+
     return code, changed
 end
 
